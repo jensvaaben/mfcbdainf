@@ -48,4 +48,6 @@ public:
 	afx_msg void OnFileSaveastextfile();
 	afx_msg void OnHelpAbout();
 	afx_msg void OnActionScanbdahardwaretopology();
+	afx_msg void OnFileOpen();
+	afx_msg void OnFileSave();
 };

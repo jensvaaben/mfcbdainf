@@ -50,6 +50,9 @@
     <ClCompile Include="bdainf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="xmldoc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="mfcbdainf.rc">

@@ -16,6 +16,8 @@
 #define new DEBUG_NEW
 #endif
 
+bool SaveXMLDoc(LPCWSTR file, BDADEVICES& d);
+bool LoadXMLDoc(LPCWSTR file, BDADEVICES& d);
 
 // CAboutDlg dialog used for App About
 
@@ -77,6 +79,8 @@ BEGIN_MESSAGE_MAP(CmfcbdainfDlg, CDialogEx)
 	ON_COMMAND(ID_FILE_SAVEASTEXTFILE, &CmfcbdainfDlg::OnFileSaveastextfile)
 	ON_COMMAND(ID_HELP_ABOUT, &CmfcbdainfDlg::OnHelpAbout)
 	ON_COMMAND(ID_ACTION_SCANBDAHARDWARETOPOLOGY, &CmfcbdainfDlg::OnActionScanbdahardwaretopology)
+	ON_COMMAND(ID_FILE_OPEN, &CmfcbdainfDlg::OnFileOpen)
+	ON_COMMAND(ID_FILE_SAVE, &CmfcbdainfDlg::OnFileSave)
 END_MESSAGE_MAP()
 
 
@@ -653,4 +657,29 @@ void CAboutDlg::OnNMClickLink(NMHDR *pNMHDR, LRESULT *pResult)
 	PNMLINK pClick = (PNMLINK)pNMHDR;
 	ShellExecute(NULL,L"open",pClick->item.szUrl,NULL,NULL,SW_SHOWDEFAULT );
 	*pResult = 0;
+}
+
+
+void CmfcbdainfDlg::OnFileOpen()
+{
+	CFileDialog dlg(TRUE,L"txt",NULL,OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,L"XML files (*.xml)|*.xml|All files (*.*)|*.*||",this,0,TRUE);
+	if(dlg.DoModal()==IDOK)
+	{
+
+		CString str = dlg.GetPathName();
+		LoadXMLDoc(str,m_bdadevices);
+		PopulateTree(m_bdadevices);
+	}
+}
+
+
+void CmfcbdainfDlg::OnFileSave()
+{
+	CFileDialog dlg(FALSE,L"txt",NULL,OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,L"XML files (*.xml)|*.xml|All files (*.*)|*.*||",this,0,TRUE);
+	if(dlg.DoModal()==IDOK)
+	{
+
+		CString str = dlg.GetPathName();
+		SaveXMLDoc(str,m_bdadevices);
+	}
 }
