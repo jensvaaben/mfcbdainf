@@ -7,6 +7,24 @@
 #include <stdio.h>
 #include "bdainf.h"
 
+//proprietary GUID
+//TBS
+static const GUID KSPROPSETID_BdaTunerExtensionProperties =
+{0xfaa8f3e5, 0x31d4, 0x4e41, {0x88, 0xef, 0xd9, 0xeb, 0x71, 0x6f, 0x6e, 0xc9}};
+
+DEFINE_GUIDSTRUCT( "C6EFE5EB-855A-4f1b-B7AA-87B5E1DC4113", KSPROPERTYSET_QBOXControl );
+#define KSPROPERTYSET_QBOXControl DEFINE_GUIDNAMED( KSPROPERTYSET_QBOXControl )
+
+const GUID KSPROPSETID_VIDCAP_CUSTOM_IRCAPTURE = 
+{0xB51C4994,0x0054,0x4749,{0x82,0x43,0x02,0x9A,0x66,0x86,0x36,0x36}};
+
+//Hauppauge
+static const GUID KSPROPSETID_BdaTunerExtensionProperties_Hauppuage =
+{0xfaa8f3e5, 0x31d4, 0x4e41, {0x88, 0xef, 0x00, 0xa0, 0xc9, 0xf2, 0x1f, 0xc7}};
+
+//FireDTV
+static const GUID KSPROPSETID_Firesat = { 0xab132414, 0xd060, 0x11d0, { 0x85, 0x83, 0x00, 0xc0, 0x4f, 0xd9, 0xba,0xf3 } };
+
 
 void scan_bda_decives();
 static void scan_bda_class(const GUID*,DEVICELIST& devicelist);
@@ -1046,6 +1064,26 @@ void guid_to_string(const GUID* guid,std::wstring& str)
 	else if(IsEqualGUID(*guid,KSDATAFORMAT_SPECIFIER_NONE))
 	{
 		str=L"KSDATAFORMAT_SPECIFIER_NONE";
+	}
+	else if(IsEqualGUID(*guid,KSPROPSETID_BdaTunerExtensionProperties))
+	{
+		str=L"KSPROPSETID_BdaTunerExtensionProperties (TBS)";
+	}
+	else if(IsEqualGUID(*guid,KSPROPERTYSET_QBOXControl))
+	{
+		str=L"KSPROPERTYSET_QBOXControl (TBS)";
+	}
+	else if(IsEqualGUID(*guid,KSPROPSETID_VIDCAP_CUSTOM_IRCAPTURE))
+	{
+		str=L"KSPROPSETID_VIDCAP_CUSTOM_IRCAPTURE (TBS)";
+	}
+	else if(IsEqualGUID(*guid,KSPROPSETID_BdaTunerExtensionProperties_Hauppuage))
+	{
+		str=L"KSPROPSETID_BdaTunerExtensionProperties (Hauppuage)";
+	}
+	else if(IsEqualGUID(*guid,KSPROPSETID_Firesat))
+	{
+		str=L"KSPROPSETID_Firesat (FireDTV)";
 	}
 	else
 	{
