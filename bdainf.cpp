@@ -25,6 +25,23 @@ static const GUID KSPROPSETID_BdaTunerExtensionProperties_Hauppuage =
 //FireDTV
 static const GUID KSPROPSETID_Firesat = { 0xab132414, 0xd060, 0x11d0, { 0x85, 0x83, 0x00, 0xc0, 0x4f, 0xd9, 0xba,0xf3 } };
 
+//DVBWorld
+#define STATIC_KSPROPSETID_DiSEqC12_3rd \
+		0xb07f0a98,0xbab1,0x4a69,0x8a,0x18,0x29,0x36,0x84,0x9b,0x28,0xfc
+DEFINE_GUIDSTRUCT("b07f0a98-bab1-4a69-8a18-2936849b28fc",KSPROPSETID_DiSEqC12_3rd);
+#define KSPROPSETID_DiSEqC12_3rd DEFINE_GUIDNAMED(KSPROPSETID_DiSEqC12_3rd)
+
+static const GUID GUID_DiseqcCmdSend = //DiseqcCmd interface GUID
+	{ 0x61ae2cdf, 0x87e8, 0x445c, { 0x8a, 0x7, 0x35, 0x6e, 0xd2, 0x28, 0xfb, 0x4e } };
+
+DEFINE_GUIDSTRUCT( "4C807F36-2DB7-44CE-9582-E1344782CB85", PCI_2002_TUNER_GUID );
+#define PCI_2002_TUNER_GUID DEFINE_GUIDNAMED( PCI_2002_TUNER_GUID )
+
+DEFINE_GUIDSTRUCT( "5A714CAD-60F9-4124-B922-8A0557B8840E", USB_2102_TUNER_GUID );
+#define USB_2102_TUNER_GUID DEFINE_GUIDNAMED( USB_2102_TUNER_GUID )
+
+DEFINE_GUIDSTRUCT( "F6694EB0-CD38-4775-98EC-56250C3FF950", PCI_4002_TUNER_GUID );
+#define PCI_4002_TUNER_GUID DEFINE_GUIDNAMED( PCI_4002_TUNER_GUID )
 
 void scan_bda_decives();
 static void scan_bda_class(const GUID*,DEVICELIST& devicelist);
@@ -1084,6 +1101,26 @@ void guid_to_string(const GUID* guid,std::wstring& str)
 	else if(IsEqualGUID(*guid,KSPROPSETID_Firesat))
 	{
 		str=L"KSPROPSETID_Firesat (FireDTV)";
+	}
+	else if(IsEqualGUID(*guid,KSPROPSETID_DiSEqC12_3rd))
+	{
+		str=L"KSPROPSETID_DiSEqC12_3rd (DVBWorld)";
+	}
+	else if(IsEqualGUID(*guid,GUID_DiseqcCmdSend))
+	{
+		str=L"GUID_DiseqcCmdSend (DVBWorld)";
+	}
+	else if(IsEqualGUID(*guid,PCI_2002_TUNER_GUID))
+	{
+		str=L"PCI_2002_TUNER_GUID (DVBWorld)";
+	}
+	else if(IsEqualGUID(*guid,USB_2102_TUNER_GUID))
+	{
+		str=L"USB_2102_TUNER_GUID (DVBWorld)";
+	}
+	else if(IsEqualGUID(*guid,PCI_4002_TUNER_GUID))
+	{
+		str=L"PCI_4002_TUNER_GUID (DVBWorld)";
 	}
 	else
 	{
