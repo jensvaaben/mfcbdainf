@@ -220,6 +220,13 @@ void CmfcbdainfDlg::PopulateDevice(DEVICE& d, HTREEITEM parent)
 	swprintf_s(buf,_countof(buf),L"device path: %s",d.device_path.c_str());
 	m_TreeCtrl.InsertItem(buf,parent);
 
+	swprintf_s(buf,_countof(buf),L"Service: %s",d.Service.c_str());
+	m_TreeCtrl.InsertItem(buf,parent);
+
+	swprintf_s(buf,_countof(buf),L"device_instance_id: %s",d.device_instance_id.c_str());
+	m_TreeCtrl.InsertItem(buf,parent);
+
+
 	HTREEITEM htreebdatopology = m_TreeCtrl.InsertItem(L"KSPROPSETID_BdaTopology",parent);
 	HTREEITEM htreetopology = m_TreeCtrl.InsertItem(L"KSPROPSETID_Topology",parent);
 	HTREEITEM htreepintopology = m_TreeCtrl.InsertItem(L"KSPROPSETID_Pin",parent);
