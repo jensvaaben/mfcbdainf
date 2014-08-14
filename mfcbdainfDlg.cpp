@@ -649,8 +649,17 @@ void CmfcbdainfDlg::OnFileOpen()
 	{
 
 		CString str = dlg.GetPathName();
-		LoadXMLDoc(str,m_bdadevices);
-		PopulateTree(m_bdadevices);
+		try
+		{
+			LoadXMLDoc(str,m_bdadevices);
+			PopulateTree(m_bdadevices);
+		}
+		catch(_com_error e)
+		{
+			CString str;
+			str.Format(IDS_ERRORLOAD,e.ErrorMessage());
+			MessageBox(str,NULL,MB_OK|MB_ICONERROR );
+		}
 	}
 }
 
@@ -662,6 +671,15 @@ void CmfcbdainfDlg::OnFileSave()
 	{
 
 		CString str = dlg.GetPathName();
-		SaveXMLDoc(str,m_bdadevices);
+		try
+		{
+			SaveXMLDoc(str,m_bdadevices);
+		}
+		catch(_com_error e)
+		{
+			CString str;
+			str.Format(IDS_ERRORSAVE,e.ErrorMessage());
+			MessageBox(str,NULL,MB_OK|MB_ICONERROR );
+		}
 	}
 }
