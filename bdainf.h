@@ -63,6 +63,7 @@ typedef struct tagPININFO
 
 	//KSPROPERTY_PIN_PHYSICALCONNECTION
 	KSPIN_PHYSICALCONNECTION physicalconnection;
+	std::wstring symboliclinkname;
 	bool physicalconnection_valid;
 
 	//KSPROPERTY_PIN_PROPOSEDATAFORMAT
@@ -85,6 +86,10 @@ typedef struct tagPINTOPOLOGY
 	std::vector<PININFO> pininfo;
 
 	void dump_device(FILE* f,int indent) const;
+
+	tagPINTOPOLOGY() : pin_ctypes(0)
+	{
+	}
 
 } PINTOPOLOGY;
 

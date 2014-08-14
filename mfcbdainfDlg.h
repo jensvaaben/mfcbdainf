@@ -33,7 +33,7 @@ protected:
 	void PopulateDevice(DEVICE&, HTREEITEM parent);
 	void PopulateTopology(TOPOLOGY&, HTREEITEM parent);
 	void PopulateBdaTopology(BDATOPOLOGY&, HTREEITEM parent);
-	void PopulateOinTopology(PINTOPOLOGY&, HTREEITEM parent);
+	void PopulatePinTopology(PINTOPOLOGY&, HTREEITEM parent);
 	void PopulatePinInfo(PININFO&, HTREEITEM parent);
 	BDADEVICES m_bdadevices;
 

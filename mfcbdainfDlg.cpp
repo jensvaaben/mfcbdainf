@@ -233,7 +233,7 @@ void CmfcbdainfDlg::PopulateDevice(DEVICE& d, HTREEITEM parent)
 
 	PopulateBdaTopology(d.bdatopology,htreebdatopology);
 	PopulateTopology(d.topology,htreetopology);
-	PopulateOinTopology(d.pintopology,htreepintopology);
+	PopulatePinTopology(d.pintopology,htreepintopology);
 }
 
 void CmfcbdainfDlg::PopulateTopology(TOPOLOGY& d, HTREEITEM parent)
@@ -365,12 +365,12 @@ void CmfcbdainfDlg::PopulateBdaTopology(BDATOPOLOGY& d, HTREEITEM parent)
 	}
 }
 
-void CmfcbdainfDlg::PopulateOinTopology(PINTOPOLOGY& d, HTREEITEM parent)
+void CmfcbdainfDlg::PopulatePinTopology(PINTOPOLOGY& d, HTREEITEM parent)
 {
 	WCHAR buf[1024];
 
 	HTREEITEM htree = m_TreeCtrl.InsertItem(L"KSPROPERTY_PIN_CTYPES",parent);
-	for(size_t n=0;n<d.pin_ctypes;n++)
+	for(size_t n=0;n<d.pininfo.size();n++)
 	{
 		swprintf_s(buf,_countof(buf),L"[%lu]",n);
 		HTREEITEM htree2 = m_TreeCtrl.InsertItem(buf,htree);
