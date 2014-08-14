@@ -39,7 +39,6 @@ typedef struct tagPININFO
 
 	//KSPROPERTY_PIN_DATARANGES
 	std::vector<KSDATARANGE> dataranges;
-	bool dataranges_valid;
 
 	//KSPROPERTY_PIN_GLOBALCINSTANCES
 	KSPIN_CINSTANCES globalcinstances;
@@ -47,15 +46,12 @@ typedef struct tagPININFO
 
 	//KSPROPERTY_PIN_INTERFACES
 	std::vector<KSPIN_INTERFACE> interfaces;
-	bool interfaces_valid;
 
 	//KSPROPERTY_PIN_MEDIUMS
 	std::vector<KSPIN_MEDIUM> mediums;
-	bool mediums_valid;
 
 	//KSPROPERTY_PIN_NAME
 	std::wstring name;
-	bool name_valid;
 
 	//KSPROPERTY_PIN_NECESSARYINSTANCES
 	ULONG necessaryinstances;
@@ -73,8 +69,8 @@ typedef struct tagPININFO
 	void dump_device(FILE* f,int indent) const;
 
 	tagPININFO() : category_valid(false),cinstances_valid(false),communication_valid(false),constraineddataranges_valid(false),
-		dataflow_valid(false),dataintersection_valid(false),dataranges_valid(false),globalcinstances_valid(false),interfaces_valid(false),
-		mediums_valid(false),name_valid(false),necessaryinstances_valid(false),physicalconnection_valid(false)/*,proposedataformat_valid(false)*/
+		dataflow_valid(false),dataintersection_valid(false),globalcinstances_valid(false),
+		necessaryinstances_valid(false),physicalconnection_valid(false)/*,proposedataformat_valid(false)*/
 	{
 	}
 

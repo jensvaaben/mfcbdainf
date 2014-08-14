@@ -369,7 +369,10 @@ void CmfcbdainfDlg::PopulatePinTopology(PINTOPOLOGY& d, HTREEITEM parent)
 {
 	WCHAR buf[1024];
 
-	HTREEITEM htree = m_TreeCtrl.InsertItem(L"KSPROPERTY_PIN_CTYPES",parent);
+	swprintf_s(buf,_countof(buf),L"KSPROPERTY_PIN_CTYPES: %lu",d.pin_ctypes);
+
+
+	HTREEITEM htree = m_TreeCtrl.InsertItem(buf,parent);
 	for(size_t n=0;n<d.pininfo.size();n++)
 	{
 		swprintf_s(buf,_countof(buf),L"[%lu]",n);
@@ -493,39 +496,32 @@ void CmfcbdainfDlg::PopulatePinInfo(PININFO& d, HTREEITEM parent)
 		m_TreeCtrl.InsertItem(L"KSPROPERTY_PIN_DATAINTERSECTION not retrieved",parent);
 	}
 
-	if(d.dataranges_valid)
+	htree = m_TreeCtrl.InsertItem(L"KSPROPERTY_PIN_DATARANGES",parent);
+	for(size_t n=0;n<d.dataranges.size();n++)
 	{
-		htree = m_TreeCtrl.InsertItem(L"KSPROPERTY_PIN_DATARANGES",parent);
-		for(size_t n=0;n<d.dataranges.size();n++)
-		{
-			swprintf_s(buf,_countof(buf),L"[%lu]",n);
-			HTREEITEM htree2 = m_TreeCtrl.InsertItem(buf,htree);
+		swprintf_s(buf,_countof(buf),L"[%lu]",n);
+		HTREEITEM htree2 = m_TreeCtrl.InsertItem(buf,htree);
 
-			std::wstring MajorFormat, SubFormat, Specifier;
+		std::wstring MajorFormat, SubFormat, Specifier;
 
-			guid_to_string(&d.dataranges[n].MajorFormat,MajorFormat);
-			guid_to_string(&d.dataranges[n].SubFormat,SubFormat);
-			guid_to_string(&d.dataranges[n].Specifier,Specifier);
+		guid_to_string(&d.dataranges[n].MajorFormat,MajorFormat);
+		guid_to_string(&d.dataranges[n].SubFormat,SubFormat);
+		guid_to_string(&d.dataranges[n].Specifier,Specifier);
 
-			swprintf_s(buf,_countof(buf),L"FormatSize: %lu",d.dataranges[n].FormatSize);
-			m_TreeCtrl.InsertItem(buf,htree2);
-			swprintf_s(buf,_countof(buf),L"Flags: %lu",d.dataranges[n].Flags);
-			m_TreeCtrl.InsertItem(buf,htree2);
-			swprintf_s(buf,_countof(buf),L"SampleSize: %lu",d.dataranges[n].SampleSize);
-			m_TreeCtrl.InsertItem(buf,htree2);
-			swprintf_s(buf,_countof(buf),L"Reserved: %lu",d.dataranges[n].Reserved);
-			m_TreeCtrl.InsertItem(buf,htree2);
-			swprintf_s(buf,_countof(buf),L"MajorFormat: %s",MajorFormat.c_str());
-			m_TreeCtrl.InsertItem(buf,htree2);
-			swprintf_s(buf,_countof(buf),L"SubFormat: %s",SubFormat.c_str());
-			m_TreeCtrl.InsertItem(buf,htree2);
-			swprintf_s(buf,_countof(buf),L"Specifier: %s",Specifier.c_str());
-			m_TreeCtrl.InsertItem(buf,htree2);
-		}
-	}
-	else
-	{
-		m_TreeCtrl.InsertItem(L"KSPROPERTY_PIN_DATARANGES not retrieved",parent);
+		swprintf_s(buf,_countof(buf),L"FormatSize: %lu",d.dataranges[n].FormatSize);
+		m_TreeCtrl.InsertItem(buf,htree2);
+		swprintf_s(buf,_countof(buf),L"Flags: %lu",d.dataranges[n].Flags);
+		m_TreeCtrl.InsertItem(buf,htree2);
+		swprintf_s(buf,_countof(buf),L"SampleSize: %lu",d.dataranges[n].SampleSize);
+		m_TreeCtrl.InsertItem(buf,htree2);
+		swprintf_s(buf,_countof(buf),L"Reserved: %lu",d.dataranges[n].Reserved);
+		m_TreeCtrl.InsertItem(buf,htree2);
+		swprintf_s(buf,_countof(buf),L"MajorFormat: %s",MajorFormat.c_str());
+		m_TreeCtrl.InsertItem(buf,htree2);
+		swprintf_s(buf,_countof(buf),L"SubFormat: %s",SubFormat.c_str());
+		m_TreeCtrl.InsertItem(buf,htree2);
+		swprintf_s(buf,_countof(buf),L"Specifier: %s",Specifier.c_str());
+		m_TreeCtrl.InsertItem(buf,htree2);
 	}
 
 	if(d.globalcinstances_valid)
@@ -541,61 +537,40 @@ void CmfcbdainfDlg::PopulatePinInfo(PININFO& d, HTREEITEM parent)
 		m_TreeCtrl.InsertItem(L"KSPROPERTY_PIN_GLOBALCINSTANCES not retrieved",parent);
 	}
 
-	if(d.interfaces_valid)
+	htree = m_TreeCtrl.InsertItem(L"KSPROPERTY_PIN_INTERFACES",parent);
+	for(size_t n=0;n<d.interfaces.size();n++)
 	{
-		htree = m_TreeCtrl.InsertItem(L"KSPROPERTY_PIN_INTERFACES",parent);
-		for(size_t n=0;n<d.interfaces.size();n++)
-		{
-			swprintf_s(buf,_countof(buf),L"[%lu]",n);
-			HTREEITEM htree2 = m_TreeCtrl.InsertItem(buf,htree);
+		swprintf_s(buf,_countof(buf),L"[%lu]",n);
+		HTREEITEM htree2 = m_TreeCtrl.InsertItem(buf,htree);
 
-			std::wstring strguid;
-			guid_to_string(&d.interfaces[n].Set ,strguid);
-			swprintf_s(buf,_countof(buf),L"Set: %s",strguid.c_str());
-			m_TreeCtrl.InsertItem(buf,htree2);
-			swprintf_s(buf,_countof(buf),L"Id: %lu",d.interfaces[n].Id);
-			m_TreeCtrl.InsertItem(buf,htree2);
-			swprintf_s(buf,_countof(buf),L"Flags: 0x%04x",d.interfaces[n].Flags);
-			m_TreeCtrl.InsertItem(buf,htree2);
-		}
-	}
-	else
-	{
-		m_TreeCtrl.InsertItem(L"KSPROPERTY_PIN_INTERFACES not retrieved",parent);
+		std::wstring strguid;
+		guid_to_string(&d.interfaces[n].Set ,strguid);
+		swprintf_s(buf,_countof(buf),L"Set: %s",strguid.c_str());
+		m_TreeCtrl.InsertItem(buf,htree2);
+		swprintf_s(buf,_countof(buf),L"Id: %lu",d.interfaces[n].Id);
+		m_TreeCtrl.InsertItem(buf,htree2);
+		swprintf_s(buf,_countof(buf),L"Flags: 0x%04x",d.interfaces[n].Flags);
+		m_TreeCtrl.InsertItem(buf,htree2);
 	}
 
-	if(d.mediums_valid)
+	htree = m_TreeCtrl.InsertItem(L"KSPROPERTY_PIN_MEDIUMS",parent);
+	for(size_t n=0;n<d.mediums.size();n++)
 	{
-		htree = m_TreeCtrl.InsertItem(L"KSPROPERTY_PIN_MEDIUMS",parent);
-		for(size_t n=0;n<d.mediums.size();n++)
-		{
-			swprintf_s(buf,_countof(buf),L"[%lu]",n);
-			HTREEITEM htree2 = m_TreeCtrl.InsertItem(buf,htree);
+		swprintf_s(buf,_countof(buf),L"[%lu]",n);
+		HTREEITEM htree2 = m_TreeCtrl.InsertItem(buf,htree);
 
-			std::wstring strguid;
-			guid_to_string(&d.mediums[n].Set ,strguid);
-			swprintf_s(buf,_countof(buf),L"Set: %s",strguid.c_str());
-			m_TreeCtrl.InsertItem(buf,htree2);
-			swprintf_s(buf,_countof(buf),L"Id: %lu",d.mediums[n].Id);
-			m_TreeCtrl.InsertItem(buf,htree2);
-			swprintf_s(buf,_countof(buf),L"Flags: 0x%04x",d.mediums[n].Flags);
-			m_TreeCtrl.InsertItem(buf,htree2);
-		}
-	}
-	else
-	{
-		m_TreeCtrl.InsertItem(L"KSPROPERTY_PIN_MEDIUMS not retrieved",parent);
+		std::wstring strguid;
+		guid_to_string(&d.mediums[n].Set ,strguid);
+		swprintf_s(buf,_countof(buf),L"Set: %s",strguid.c_str());
+		m_TreeCtrl.InsertItem(buf,htree2);
+		swprintf_s(buf,_countof(buf),L"Id: %lu",d.mediums[n].Id);
+		m_TreeCtrl.InsertItem(buf,htree2);
+		swprintf_s(buf,_countof(buf),L"Flags: 0x%04x",d.mediums[n].Flags);
+		m_TreeCtrl.InsertItem(buf,htree2);
 	}
 
-	if(d.name_valid)
-	{
-		swprintf_s(buf,_countof(buf),L"KSPROPERTY_PIN_NAME: %s",d.name.c_str());
-		m_TreeCtrl.InsertItem(buf,parent);
-	}
-	else
-	{
-		m_TreeCtrl.InsertItem(L"KSPROPERTY_PIN_NAME not retrieved",parent);
-	}
+	swprintf_s(buf,_countof(buf),L"KSPROPERTY_PIN_NAME: %s",d.name.c_str());
+	m_TreeCtrl.InsertItem(buf,parent);
 
 	if(d.necessaryinstances_valid)
 	{

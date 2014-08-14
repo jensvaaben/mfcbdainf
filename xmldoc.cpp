@@ -501,10 +501,7 @@ static HRESULT AddPinInfo(IXMLDOMDocument* pDoc,IXMLDOMElement* pParent,const PI
 	}
 	hr = AppendChild(mediums,pin);
 
-	if(p.name_valid)
-	{
-		hr = AddAttribute(pDoc,L"ksproperty_pin_name",p.name.c_str(),pin);
-	}
+	hr = AddAttribute(pDoc,L"ksproperty_pin_name",p.name.c_str(),pin);
 
 	if(p.necessaryinstances_valid)
 	{
@@ -580,11 +577,11 @@ static HRESULT AddAttribute(IXMLDOMDocument* pDoc,LPCWSTR name, _variant_t& valu
 static HRESULT guid_to_string(REFCLSID rclsid,std::wstring& v)
 {
 	HRESULT hr;
-	LPOLESTR lpolestr;
-	if((hr=StringFromCLSID(rclsid,&lpolestr ))==S_OK)
+	RPC_WSTR lpolestr;
+	if((hr=UuidToString(&rclsid,&lpolestr ))==S_OK)
 	{
-		v=lpolestr;
-		CoTaskMemFree (lpolestr);
+		v=(LPCWSTR)lpolestr;
+		RpcStringFree (&lpolestr);
 		return S_OK;
 	}
 	else
@@ -595,7 +592,7 @@ static HRESULT guid_to_string(REFCLSID rclsid,std::wstring& v)
 
 static HRESULT string_to_guid(LPCWSTR v,CLSID* rclsid)
 {
-	return CLSIDFromString(v,rclsid);
+	return UuidFromString((RPC_WSTR)v,rclsid);
 }
 
 static HRESULT GetDeviceList(IXMLDOMElement* e, DEVICELIST& d)
@@ -745,7 +742,7 @@ static HRESULT GetPinTopology(IXMLDOMElement* e,PINTOPOLOGY& v)
 	hr = e->getAttribute(_bstr_t(L"ksproperty_pin_ctypes"),&var);
 	v.pin_ctypes = (unsigned long)var;
 
-	hr = e->selectSingleNode(_bstr_t(L""),&pins_node);
+	hr = e->selectSingleNode(_bstr_t(L"pins"),&pins_node);
 	pins = pins_node;
 
 	hr = GetPininfos(pins,v.pininfo);
@@ -1056,7 +1053,6 @@ static HRESULT GetPininfos(IXMLDOMElement* e,std::vector<PININFO>& v)
 				pininfo.dataranges.push_back(ksdatarange);
 			}
 
-			pininfo.dataranges_valid = true;
 			item2.Release();
 			itemnode2.Release();
 		}
@@ -1099,7 +1095,6 @@ static HRESULT GetPininfos(IXMLDOMElement* e,std::vector<PININFO>& v)
 				pininfo.interfaces.push_back(ksidentifier);
 			}
 
-			pininfo.interfaces_valid = true;
 			itemnode2.Release();
 			item2.Release();
 		}
@@ -1127,7 +1122,6 @@ static HRESULT GetPininfos(IXMLDOMElement* e,std::vector<PININFO>& v)
 				pininfo.mediums.push_back(ksidentifier);
 			}
 
-			pininfo.mediums_valid = true;
 			itemnode2.Release();
 			item2.Release();
 		}
@@ -1136,7 +1130,6 @@ static HRESULT GetPininfos(IXMLDOMElement* e,std::vector<PININFO>& v)
 		if(hr==S_OK)
 		{
 			pininfo.name = (LPCWSTR)(_bstr_t)var;
-			pininfo.name_valid = true;
 			var.Clear();
 		}
 

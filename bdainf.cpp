@@ -595,7 +595,6 @@ static void get_pin(DWORD dwIdx,HANDLE hFile,DEVICE& device)
 							printf("[%lu] got IOCTL_KS_PROPERTY(KSPROPSETID_Pin,KSPROPERTY_PIN_DATARANGES) mismath size=%lu count=%lu\n",dwIdx,pksmultiple_item->Size,pksmultiple_item->Count);
 
 						}
-						pininfo.dataranges_valid=true;
 					}
 					else
 					{
@@ -637,7 +636,6 @@ static void get_pin(DWORD dwIdx,HANDLE hFile,DEVICE& device)
 							printf("[%lu] got IOCTL_KS_PROPERTY(KSPROPSETID_Pin,KSPROPERTY_PIN_INTERFACES) mismath size=%lu count=%lu\n",dwIdx,pksmultiple_item->Size,pksmultiple_item->Count);
 
 						}
-						pininfo.interfaces_valid=true;
 					}
 					else
 					{
@@ -665,7 +663,6 @@ static void get_pin(DWORD dwIdx,HANDLE hFile,DEVICE& device)
 							printf("[%lu] got IOCTL_KS_PROPERTY(KSPROPSETID_Pin,KSPROPERTY_PIN_MEDIUMS) mismath size=%lu count=%lu\n",dwIdx,pksmultiple_item->Size,pksmultiple_item->Count);
 
 						}
-						pininfo.mediums_valid=true;
 					}
 					else
 					{
@@ -679,7 +676,6 @@ static void get_pin(DWORD dwIdx,HANDLE hFile,DEVICE& device)
 					{
 						printf("[%lu] got IOCTL_KS_PROPERTY(KSPROPSETID_Pin,KSPROPERTY_PIN_NAME) (bytes returned=%lu)\n",dwIdx,dwBytesReturned);
 						pininfo.name=(LPCWSTR)&output[0];
-						pininfo.name_valid=true;
 					}
 					else
 					{
@@ -1411,40 +1407,32 @@ void tagPININFO::dump_device(FILE* f,int indent) const
 		fprintf(f,"KSPROPERTY_PIN_DATAINTERSECTION not retrieved\n");
 	}
 
-	if(dataranges_valid)
+	tagDEVICE::do_indent(f,indent);
+	fprintf(f,"KSPROPERTY_PIN_DATARANGES\n");
+	for(size_t n=0;n<dataranges.size();n++)
 	{
-		tagDEVICE::do_indent(f,indent);
-		fprintf(f,"KSPROPERTY_PIN_DATARANGES\n");
-		for(size_t n=0;n<dataranges.size();n++)
-		{
-			tagDEVICE::do_indent(f,indent+1);
-			fprintf(f,"[%u]\n",n);
-			std::wstring MajorFormat, SubFormat, Specifier;
+		tagDEVICE::do_indent(f,indent+1);
+		fprintf(f,"[%u]\n",n);
+		std::wstring MajorFormat, SubFormat, Specifier;
 
-			guid_to_string(&dataranges[n].MajorFormat,MajorFormat);
-			guid_to_string(&dataranges[n].SubFormat,SubFormat);
-			guid_to_string(&dataranges[n].Specifier,Specifier);
+		guid_to_string(&dataranges[n].MajorFormat,MajorFormat);
+		guid_to_string(&dataranges[n].SubFormat,SubFormat);
+		guid_to_string(&dataranges[n].Specifier,Specifier);
 
-			tagDEVICE::do_indent(f,indent+2);
-			fprintf(f,"FormatSize: %lu\n",dataranges[n].FormatSize);
-			tagDEVICE::do_indent(f,indent+2);
-			fprintf(f,"Flags: %lu\n",dataranges[n].Flags);
-			tagDEVICE::do_indent(f,indent+2);
-			fprintf(f,"SampleSize: %lu\n",dataranges[n].SampleSize);
-			tagDEVICE::do_indent(f,indent+2);
-			fprintf(f,"Reserved: %lu\n",dataranges[n].Reserved);
-			tagDEVICE::do_indent(f,indent+2);
-			fprintf(f,"MajorFormat: %S\n",MajorFormat.c_str());
-			tagDEVICE::do_indent(f,indent+2);
-			fprintf(f,"SubFormat: %S\n",SubFormat.c_str());
-			tagDEVICE::do_indent(f,indent+2);
-			fprintf(f,"Specifier: %S\n",Specifier.c_str());
-		}
-	}
-	else
-	{
-		tagDEVICE::do_indent(f,indent);
-		fprintf(f,"KSPROPERTY_PIN_DATARANGES not retrieved\n");
+		tagDEVICE::do_indent(f,indent+2);
+		fprintf(f,"FormatSize: %lu\n",dataranges[n].FormatSize);
+		tagDEVICE::do_indent(f,indent+2);
+		fprintf(f,"Flags: %lu\n",dataranges[n].Flags);
+		tagDEVICE::do_indent(f,indent+2);
+		fprintf(f,"SampleSize: %lu\n",dataranges[n].SampleSize);
+		tagDEVICE::do_indent(f,indent+2);
+		fprintf(f,"Reserved: %lu\n",dataranges[n].Reserved);
+		tagDEVICE::do_indent(f,indent+2);
+		fprintf(f,"MajorFormat: %S\n",MajorFormat.c_str());
+		tagDEVICE::do_indent(f,indent+2);
+		fprintf(f,"SubFormat: %S\n",SubFormat.c_str());
+		tagDEVICE::do_indent(f,indent+2);
+		fprintf(f,"Specifier: %S\n",Specifier.c_str());
 	}
 
 	if(globalcinstances_valid)
@@ -1462,66 +1450,42 @@ void tagPININFO::dump_device(FILE* f,int indent) const
 		fprintf(f,"KSPROPERTY_PIN_GLOBALCINSTANCES not retrieved\n");
 	}
 
-	if(interfaces_valid)
+	tagDEVICE::do_indent(f,indent);
+	fprintf(f,"KSPROPERTY_PIN_INTERFACES\n");
+	for(size_t n=0;n<interfaces.size();n++)
 	{
-		tagDEVICE::do_indent(f,indent);
-		fprintf(f,"KSPROPERTY_PIN_INTERFACES\n");
-		for(size_t n=0;n<interfaces.size();n++)
-		{
-			tagDEVICE::do_indent(f,indent+1);
-			fprintf(f,"[%lu]\n",n);
+		tagDEVICE::do_indent(f,indent+1);
+		fprintf(f,"[%lu]\n",n);
 
-			std::wstring strguid;
-			guid_to_string(&interfaces[n].Set ,strguid);
-			tagDEVICE::do_indent(f,indent+2);
-			fprintf(f,"Set: %S\n",strguid.c_str());
-			tagDEVICE::do_indent(f,indent+2);
-			fprintf(f,"Id: %lu\n",interfaces[n].Id);
-			tagDEVICE::do_indent(f,indent+2);
-			fprintf(f,"Flags: 0x%04x\n",interfaces[n].Flags);
-		}
-	}
-	else
-	{
-		tagDEVICE::do_indent(f,indent);
-		fprintf(f,"KSPROPERTY_PIN_INTERFACES not retrieved\n");
+		std::wstring strguid;
+		guid_to_string(&interfaces[n].Set ,strguid);
+		tagDEVICE::do_indent(f,indent+2);
+		fprintf(f,"Set: %S\n",strguid.c_str());
+		tagDEVICE::do_indent(f,indent+2);
+		fprintf(f,"Id: %lu\n",interfaces[n].Id);
+		tagDEVICE::do_indent(f,indent+2);
+		fprintf(f,"Flags: 0x%04x\n",interfaces[n].Flags);
 	}
 
-	if(mediums_valid)
+	tagDEVICE::do_indent(f,indent);
+	fprintf(f,"KSPROPERTY_PIN_MEDIUMS\n");
+	for(size_t n=0;n<mediums.size();n++)
 	{
-		tagDEVICE::do_indent(f,indent);
-		fprintf(f,"KSPROPERTY_PIN_MEDIUMS\n");
-		for(size_t n=0;n<mediums.size();n++)
-		{
-			tagDEVICE::do_indent(f,indent+1);
-			fprintf(f,"[%lu]\n",n);
+		tagDEVICE::do_indent(f,indent+1);
+		fprintf(f,"[%lu]\n",n);
 
-			std::wstring strguid;
-			guid_to_string(&mediums[n].Set ,strguid);
-			tagDEVICE::do_indent(f,indent+2);
-			fprintf(f,"Set: %S\n",strguid.c_str());
-			tagDEVICE::do_indent(f,indent+2);
-			fprintf(f,"Id: %lu\n",mediums[n].Id);
-			tagDEVICE::do_indent(f,indent+2);
-			fprintf(f,"Flags: 0x%04x\n",mediums[n].Flags);
-		}
-	}
-	else
-	{
-		tagDEVICE::do_indent(f,indent);
-		fprintf(f,"KSPROPERTY_PIN_MEDIUMS not retrieved\n");
+		std::wstring strguid;
+		guid_to_string(&mediums[n].Set ,strguid);
+		tagDEVICE::do_indent(f,indent+2);
+		fprintf(f,"Set: %S\n",strguid.c_str());
+		tagDEVICE::do_indent(f,indent+2);
+		fprintf(f,"Id: %lu\n",mediums[n].Id);
+		tagDEVICE::do_indent(f,indent+2);
+		fprintf(f,"Flags: 0x%04x\n",mediums[n].Flags);
 	}
 
-	if(name_valid)
-	{
-		tagDEVICE::do_indent(f,indent);
-		fprintf(f,"KSPROPERTY_PIN_NAME: %S\n",name.c_str());
-	}
-	else
-	{
-		tagDEVICE::do_indent(f,indent);
-		fprintf(f,"KSPROPERTY_PIN_NAME not retrieved\n");
-	}
+	tagDEVICE::do_indent(f,indent);
+	fprintf(f,"KSPROPERTY_PIN_NAME: %S\n",name.c_str());
 
 	if(necessaryinstances_valid)
 	{
