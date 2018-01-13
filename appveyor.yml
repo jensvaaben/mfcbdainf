@@ -1,0 +1,11 @@
+version: 1.0.0.3.{build}
+image: Visual Studio 2013
+configuration: Release
+build:
+  project: mfcbdainf.sln
+  verbosity: minimal
+artifacts:
+- path: Release\mfcbdainf.exe
+  name: mfcbdainf
+  type: zip
+  
